@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nişan Geri Sayım</title>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap');
+
+    body, html {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background-color: #000;
+    }
+
+    .scene {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100vw;
+        height: 56.25vw; 
+        min-height: 100vh;
+        min-width: 177.77vh; 
+        
+        /* Arka plan dosyası adı güncellendi */
+        background-image: url('3.jpg'); /* Eğer çalışmazsa '3.jpg' olarak değiştirmeyi dene */
+        background-size: 100% 100%;
+        background-position: center;
+        background-repeat: no-repeat;
+        
+        container-type: size;
+    }
+
+    .countdown-container {
+        position: absolute;
+        top: 38.3%; /* Küçültünce milim yukarıda kalabilir diye minicik aşağı aldım (38'di, 38.3 yaptım) */
+        left: 50%; 
+        transform: translate(-50%, -50%);
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 1cqw; /* ARALIKLAR KÜÇÜLTÜLDÜ (Eskiden 2cqw idi) */
+        color: #5b7f9a; 
+        font-family: 'Playfair Display', serif;
+        /* Rakamların yayılmasını engellemek için genişlik limitini kaldırdık, artık daha derli toplular */
+    }
+
+    .time-box {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .number {
+        font-size: 2.7cqw; /* FONT KÜÇÜLTÜLDÜ (Eskiden 3.5cqw idi) */
+        font-weight: 500;
+        letter-spacing: 0.05cqw;
+        line-height: 1;
+    }
+
+    .label {
+        font-size: 0.65cqw; /* Alt yazılar da orantılı olarak biraz ufaltıldı */
+        margin-top: 0.7cqw;
+        text-transform: uppercase;
+        letter-spacing: 0.1cqw;
+    }
+
+    .separator {
+        font-size: 2.7cqw; /* İki nokta da rakamla aynı boyuta getirildi */
+        font-weight: 500;
+        line-height: 0.9;
+        margin-top: -0.1cqw;
+        margin-left: -0.2cqw; /* İki noktaları rakamlara iyice yaklaştırmak için eklendi */
+        margin-right: -0.2cqw;
+    }
+</style>
+</head>
+<body>
+
+<div class="scene">
+    <div class="countdown-container">
+        <div class="time-box">
+            <span class="number" id="days">00</span>
+            <span class="label">GÜN</span>
+        </div>
+        <div class="separator">:</div>
+        <div class="time-box">
+            <span class="number" id="hours">00</span>
+            <span class="label">SAAT</span>
+        </div>
+        <div class="separator">:</div>
+        <div class="time-box">
+            <span class="number" id="minutes">00</span>
+            <span class="label">DAKİKA</span>
+        </div>
+        <div class="separator">:</div>
+        <div class="time-box">
+            <span class="number" id="seconds">00</span>
+            <span class="label">SANİYE</span>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Hedef: 12 Aralık 2026, Saat 13:00
+    const countDownDate = new Date("Dec 12, 2026 13:00:00").getTime();
+
+    const x = setInterval(function() {
+        const now = new Date().getTime();
+        const distance = countDownDate - now;
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        document.getElementById("days").innerHTML = days < 10 ? "0" + days : days;
+        document.getElementById("hours").innerHTML = hours < 10 ? "0" + hours : hours;
+        document.getElementById("minutes").innerHTML = minutes < 10 ? "0" + minutes : minutes;
+        document.getElementById("seconds").innerHTML = seconds < 10 ? "0" + seconds : seconds;
+
+        if (distance < 0) {
+            clearInterval(x);
+            document.querySelector(".countdown-container").innerHTML = "<div style='font-size: 2.7cqw;'>Büyük Gün Geldi!</div>";
+        }
+    }, 1000);
+</script>
+
+</body>
+</html>
